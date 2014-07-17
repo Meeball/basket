@@ -1,13 +1,24 @@
-## Title 
+# Basket 
 
-# 一级标题
+A blackjack implementation in python. 
 
-*word*
+## Get Started
 
-···python
+### Install 
 
-def function(): 
+```plain 
+$ python setup.py install 
+``` 
 
-    pass
+### Start a Game 
 
-··· 
+```plain 
+$ blackjack 
+``` 
+
+## Instructions 
+
+
+## Contact Me 
+
+
