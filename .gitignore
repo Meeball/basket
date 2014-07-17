@@ -5,6 +5,9 @@
 *.egg
 *.egg-info
 
+build/
+dist/ 
+
 *.o
 *.swap 
 *.out 
