@@ -255,7 +255,7 @@ def stand():
     if in_play == True:
         while dealer_hand.get_value() < 17:
             dealer_hand.add_card(deck.deal_card())
-            dealer_value = dealer_hand.get_value()
+            
         if dealer_hand.get_value() > 21:
             outcome = "Dealer went bust and you win."
             message = "New deal?"
@@ -276,6 +276,7 @@ def stand():
             outcome = "You lose."
             message = "New deal?"            
             
+    dealer_value = dealer_hand.get_value()
     in_play = False
 
 

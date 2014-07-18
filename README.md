@@ -3,7 +3,6 @@
 A blackjack implementation in python. 
 
 ## Get Started
-- - -
 
 ### Install 
 
@@ -18,7 +17,6 @@ $ blackjack
 ``` 
 
 ## Instructions
-- - -
 
 ###Description
 
@@ -57,7 +55,6 @@ Click "Double" before any hittings if you want to double your bet and hit only o
 
 
 ## Features
-- - -
 
 * The dealer has to take hits until his cards total 17 or more points.
 
@@ -69,7 +66,6 @@ Click "Double" before any hittings if you want to double your bet and hit only o
 
 
 ## Contact Me  
-- - -
 
 You can find me on GitHub as ['Meeball'](https://github.com/Meeball)
 
