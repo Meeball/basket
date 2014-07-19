@@ -14,6 +14,7 @@ card_back = simplegui.load_image("http://commondatastorage.googleapis.com/codesk
 # initialize some useful global variables
 in_play = False
 outcome = ""
+betmessage = ""
 message = ""
 score = 100
 player_value = 0
@@ -128,6 +129,7 @@ def deal():
 
     if score < 0 :
         message = "Game Over"
+        score = -1
     else:
         if in_play == False:
             outcome = ""
@@ -150,13 +152,24 @@ def deal():
 
             if player_hand.get_value() == 21:
                message = "Blackjack! "
-               if player_hand.get_value() == dealer_hand.get_value():
-                  message += " Push"
-                  score += bet
-               else:
-                  message += " You Win!"
+               while dealer_hand.get_value() < 17:
+                  dealer_hand.add_card(deck.deal_card())
+                  dealer_value = dealer_hand.get_value()
+               if dealer_hand.get_value() > 21:
+                  outcome = "Dealer went bust and you win."
+                  message = message + "New deal?"
                   score += 2*bet
-                  in_play = False
+               elif player_hand.get_value() > dealer_hand.get_value():
+                  outcome = "You win."
+                  message = "New deal?"
+                  score += 2*bet
+
+               elif player_hand.get_value() == dealer_hand.get_value():
+                  outcome = "Push."
+                  message = "New deal?"
+                  score += bet             
+
+               in_play = False
             
         else:
               outcome = "You give up and lose."
@@ -181,7 +194,7 @@ def hit():
         player_value = player_hand.get_value()
         
 def double():
-    global in_play, score, outcome, message, player_hand, player_value, bet
+    global in_play, score, outcome, message, player_hand, player_value, bet, betmessage
     # double the bet
     score -= bet
     bet = 2*bet
@@ -197,8 +210,9 @@ def double():
             outcome = "You went bust and lose."
             message = "New deal?"
             player_value = player_hand.get_value()
+            dealer_value = dealer_hand.get_value()
 
-        in_play = False
+        
         while dealer_hand.get_value() < 17:
             dealer_hand.add_card(deck.deal_card())
             dealer_value = dealer_hand.get_value()
@@ -220,9 +234,10 @@ def double():
 
         else:
             outcome = "You lose."
-            message = "New deal?"            
+            message = "New deal?"
+
+        in_play = False
     
-   
     bet = bet/2
    
     
@@ -240,7 +255,7 @@ def stand():
     if in_play == True:
         while dealer_hand.get_value() < 17:
             dealer_hand.add_card(deck.deal_card())
-            dealer_value = dealer_hand.get_value()
+            
         if dealer_hand.get_value() > 21:
             outcome = "Dealer went bust and you win."
             message = "New deal?"
@@ -261,6 +276,7 @@ def stand():
             outcome = "You lose."
             message = "New deal?"            
             
+    dealer_value = dealer_hand.get_value()
     in_play = False
 
 
@@ -274,7 +290,8 @@ def draw(canvas):
     if in_play == False:
         canvas.draw_text("Dealer:  " + str(dealer_value), [100, 180], 30, "Black")
     else:
-        canvas.draw_text("Dealer:  ? + " + str(dealer_value - dealer_hand.get_first_value()), [100, 180], 30, "Black")
+        #canvas.draw_text("Dealer:  ? + " + str(dealer_value - dealer_hand.get_first_value()), [100, 180], 30, "Black")
+        canvas.draw_text("Dealer  " , [100, 180], 30, "Black")
     canvas.draw_text("Player:  " + str(player_value), [100, 380], 30, "Black")    
     canvas.draw_text("Blackjack", [150, 100], 50, "Blue")
     canvas.draw_text("Chips " + str(score)+"     Bet "+ str(bet), [400, 100], 30, "Black")
