@@ -1,3 +1,4 @@
+#!/usr/bin/env python 
 # -*- coding: utf-8 -*-
 
 import sys 
@@ -16,7 +17,7 @@ class PyTest(TestCommand):
 
     def run_tests(self): 
         import pytest 
-        errcode = pytest.main(self.test_args + ['-s']) 
+        errcode = pytest.main(self.test_args) 
         sys.exit(errcode) 
 
 setup(
