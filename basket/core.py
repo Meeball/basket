@@ -22,7 +22,7 @@ class Card(object):
         self.rank = rank
         
     def __str__(self):
-        return self.suit + self.rank
+        return '%s%s' %(self.suit, self.rank) 
 
     def get_suit(self):
         return self.suit
@@ -203,18 +203,36 @@ def stand():
     in_play = False
 
 class Player(object): 
-
+    ''' player or dealer. 
+    ''' 
     def __init__(self, dealer=True, chips=100): 
         self.dealer = dealer 
         self.cards = [] 
+        self.stood = False 
         if dealer: 
             self.chips = float('inf') 
         else: 
             self.chips = chips 
 
+    def stand(self): 
+        self.stood = True 
+
     def add_card(self, card): 
         self.cards.append(card) 
     
+    def clear_cards(self): 
+        self.cards = [] 
+        self.stood = False
+
+    def get_chips(self): 
+        return self.chips 
+
+    def inc_chips(self, bet): 
+        self.chips += bet 
+
+    def dec_chips(self, bet): 
+        self.chips -= bet 
+
     def get_points(self):
         rank_list = map(lambda c: c.get_rank(), self.cards) 
         points = sum(map(lambda c: c.get_point(), self.cards)) 
@@ -224,41 +242,47 @@ class Player(object):
 
         return points 
 
-    def get_first_value(self):
+    def get_second_value(self):
         '''the value of the known card of dealer's hand 
         ''' 
-        return self.card[0].get_point()
+        return self.cards[0].get_point()
 
 class Game(object): 
     
     def __init__(self): 
-        self.deck = None
-        self.player = None 
-        self.dealer = None 
+        self.started = False 
+        self.deck = Deck() 
+        self.player = Player(dealer=False) 
+        self.dealer = Player(dealer=True) 
         self.bet = 1 
 
     def issue_card(self): 
         return self.deck.deal_card() 
 
     def start(self): 
-        self.deck = Deck() 
         self.deck.shuffle() 
 
-        self.player = Player(dealer=False) 
-        self.dealer = Player(dealer=True) 
-        player.add_card(deck.deal_card())
-        dealer.add_card(deck.deal_card())
-        player.add_card(deck.deal_card())
-        dealer.add_card(deck.deal_card())
+        self.player.add_card(self.deck.deal_card())
+        self.dealer.add_card(self.deck.deal_card())
+        self.player.add_card(self.deck.deal_card())
+        self.dealer.add_card(self.deck.deal_card())
 
-        player_points = player.get_points()
-        dealer_points = dealer.get_points()
+        self.started = True 
+
+    def stop(self): 
+        self.started = False 
+        self.player.clear_cards()
+        self.dealer.clear_cards() 
+        self.deck = Deck() 
 
     def get_player(self): 
         return self.player 
 
     def get_dealer(self): 
         return self.dealer 
+
+    def get_bet(self): 
+        return self.bet 
 
     def set_bet(self, bet): 
         self.bet = bet
