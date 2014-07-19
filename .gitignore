@@ -1,0 +1,14 @@
+
+*.pyo
+*.pyc
+*.pyd
+*.egg
+*.egg-info
+
+build/
+dist/ 
+
+*.o
+*.swap 
+*.out 
+
