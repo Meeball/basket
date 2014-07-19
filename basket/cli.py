@@ -20,10 +20,12 @@ def stand(game):
     
     check(game, finished=True) 
 
-def double(game, player): 
+def double(game): 
+    player = game.get_player() 
     game.set_bet(2 * game.get_bet()) 
+    print "Bet is set to %d." %(game.get_bet()) 
     hit(game, player) 
-    stand(game, player) 
+    stand(game) 
 
 def hit(game, player): 
     time.sleep(HIT_INTERVAL) 
@@ -112,6 +114,7 @@ def print_usage():
     print '    b --bet      set bet value at the beginning.' 
     print '    d --double   double the bet.' 
     print '    h --help     print usage.' 
+    print '    q --quit     exit.' 
 
 def print_status(game): 
     player = game.get_player() 
@@ -119,16 +122,21 @@ def print_status(game):
 
     if game.started: 
         print "The bet of the round is %d." %(game.get_bet()) 
-        print "Your current point is %d." %(player.get_points()) 
+        print "Your current cards are %s with total points of %d." %(
+                str(' '.join(map(str, player.cards))), 
+                player.get_points()) 
+
         if player.stood: 
-            print "Dealer's point is %d." %(dealer.get_points()) 
+            print "Dealer's cards are %s with total points of %d." %(
+                    str(' '.join(map(str, dealer.cards))), 
+                    dealer.get_points())
         else: 
-            print "Dealer's point available is %d." %(
-                    dealer.get_second_value()) 
+            print "Dealer's revealed card is %s." %(
+                    str(dealer.get_second_card()))
     else : 
         print "Game not start. "
-        print "Bet is set to %d." %(game.get_bet()) 
-        print "Your current chips is %d." %(player.get_chips()) 
+        print "Current bet is %d, and your remaining chips is %d" %(
+                game.get_bet(), player.get_chips()) 
 
 def main(): 
     print 'Welcome to Basket!' 
@@ -190,4 +198,16 @@ def main():
 
             val = int(cmd.split()[1]) 
             game.set_bet(val) 
+
+        elif cmd in ['d', 'double']: 
+            if not game.started: 
+                print "Round has not started yet." 
+                continue 
+            if len(player.cards) != 2: 
+                print "You've already hit %d cards." %(len(player.cards) - 2) 
+
+            double(game) 
+
+        elif cmd in ['q', 'quit']: 
+            sys.exit(0) 
 
