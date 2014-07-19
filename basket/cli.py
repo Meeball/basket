@@ -29,7 +29,13 @@ def double(game):
 
 def hit(game, player): 
     time.sleep(HIT_INTERVAL) 
-    card = game.issue_card()
+    try: 
+        card = game.issue_card()
+    except IndexError as e: 
+        print 'run out of cards on the deck.'
+        game.stop() 
+        return 
+
     player.add_card(card) 
 
     if player.dealer: 
