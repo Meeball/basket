@@ -22,7 +22,7 @@ class Card(object):
         self.rank = rank
         
     def __str__(self):
-        return '%s%s' %(self.suit, self.rank) 
+        return '[%s%s]' %(self.suit, self.rank) 
 
     def get_suit(self):
         return self.suit
@@ -234,18 +234,20 @@ class Player(object):
         self.chips -= bet 
 
     def get_points(self):
+        '''calculate the maximum sum of points of the cards in hand. 
+        ''' 
         rank_list = map(lambda c: c.get_rank(), self.cards) 
         points = sum(map(lambda c: c.get_point(), self.cards)) 
 
-        if 'A' in rank_list:
-            return points + 10 if points + 10 <= 21 else points
+        for i in range(rank_list.count('A')):
+            points = points + 10 if points + 10 <= 21 else points
 
         return points 
 
-    def get_second_value(self):
-        '''the value of the known card of dealer's hand 
+    def get_second_card(self):
+        '''the known card of dealer's hand 
         ''' 
-        return self.cards[0].get_point()
+        return self.cards[1]
 
 class Game(object): 
     
