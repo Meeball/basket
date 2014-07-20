@@ -95,12 +95,13 @@ class Player(object):
 
 class Game(object): 
     
+    DEFAULT_BET = 1 
     def __init__(self): 
         self.started = False 
         self.deck = Deck() 
         self.player = Player(dealer=False) 
         self.dealer = Player(dealer=True) 
-        self.bet = 1 
+        self.bet = self.DEFAULT_BET
 
     def issue_card(self): 
         return self.deck.deal_card() 
@@ -120,6 +121,7 @@ class Game(object):
         self.player.clear_cards()
         self.dealer.clear_cards() 
         self.deck = Deck() 
+        self.bet = self.DEFAULT_BET
 
     def get_player(self): 
         return self.player 
