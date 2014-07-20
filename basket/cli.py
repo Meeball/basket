@@ -27,7 +27,7 @@ def double(game):
         print "Insufficient Chips. Press 'q' to exit." 
         return 
 
-    game.set_bet() 
+    game.set_bet(nb) 
     print "Bet is set to %d." %(game.get_bet()) 
     hit(game, player) 
     stand(game) 
@@ -43,19 +43,13 @@ def hit(game, player):
 
     player.add_card(card) 
 
-    if player.dealer: 
-        print "Dealer got card %s, and current total point is %d." %(
-                str(card), player.get_points()) 
-    else: 
-        print "New Card %s." %(str(card)) 
-
     check(game, finished=False) 
 
 def win(game): 
     player_points = game.get_player().get_points()
     dealer_points = game.get_dealer().get_points()
 
-    print '[Win] You got points %d while dealer got %d.' %(
+    print '[Win] You got %d while dealer got %d.' %(
             player_points, dealer_points) 
     player = game.get_player() 
     player.inc_chips(game.get_bet()) 
@@ -65,8 +59,9 @@ def win(game):
 def lose(game): 
     player_points = game.get_player().get_points()
     dealer_points = game.get_dealer().get_points()
+    
 
-    print '[Lose] You got points %d while dealer got %d.' %(
+    print '[Lose] You got %d while dealer got %d.' %(
             player_points, dealer_points) 
 
     player = game.get_player() 
@@ -78,18 +73,20 @@ def lose(game):
 
 def draw(game): 
     dealer_points = game.get_dealer().get_points()
-    print '[Draw] You and dealer both got points %d.' %(dealer_points) 
+    print '[Draw] You and dealer both got %d.' %(dealer_points) 
     game.stop() 
 
 def check(game, finished=False): 
     if not game.started: 
-        return 
+        return
+    
+    print_status(game) 
 
     player_points = game.get_player().get_points()
     dealer_points = game.get_dealer().get_points()
 
     if player_points > 21: 
-        lose(game) 
+        lose(game)
     elif dealer_points > 21: 
         win(game) 
     elif player_points == 21 and dealer_points == 21: 
@@ -107,7 +104,7 @@ def check(game, finished=False):
         else: 
             draw(game) 
 
-    print_status(game) 
+    
 
 def player_stats(player): 
     if player.dealer: 
@@ -117,45 +114,46 @@ def player_stats(player):
 
 def print_usage(): 
     print 'Available Commands'
-    print '    s --start    start a new round.' 
+    print '    n --new      start a new round.' 
     print '    p --print    print the status of current game.' 
-    print '    c --hit      fetch a card.' 
-    print '    t --stand    stand.' 
+    print '    h --hit      fetch a card.' 
+    print '    s --stand    stand.' 
     print '    g --giveup   give up and finish the round.' 
     print '    b --bet      set bet value at the beginning.' 
     print '    d --double   double the bet.' 
-    print '    h --help     print usage.' 
     print '    q --quit     exit.' 
 
 def print_status(game): 
     player = game.get_player() 
     dealer = game.get_dealer() 
 
-    if game.started: 
-        print "The bet of the round is %d." %(game.get_bet()) 
-        print "Your current cards are %s with total points of %d." %(
+    if game.started:  
+        print "Your hand: %s total %d." %(
                 str(' '.join(map(str, player.cards))), 
                 player.get_points()) 
 
         if player.stood: 
-            print "Dealer's cards are %s with total points of %d." %(
+            print "Dealer's hand: %s total %d." %(
                     str(' '.join(map(str, dealer.cards))), 
                     dealer.get_points())
         else: 
             print "Dealer's revealed card is %s." %(
                     str(dealer.get_second_card()))
     else : 
-        print "Game not start. "
-        print "Current bet is %d, and your remaining chips is %d" %(
+        print "Not in play."
+        print "Current bet: %d  Your remaining chips: %d" %(
                 game.get_bet(), player.get_chips()) 
 
 def main(): 
-    print 'Welcome to Basket!' 
-    print 'type h or help for instructions' 
+    print 'Welcome to Blackjack!' 
+    print 'type help for instructions' 
 
     game = Game() 
     player = game.get_player() 
-    dealer = game.get_dealer() 
+    dealer = game.get_dealer()
+
+    print 'Default bet: %d  Remaining chips: %d ' %(
+                game.get_bet(), player.get_chips()) 
 
     while True: 
         if game.started: 
@@ -164,7 +162,7 @@ def main():
             sys.stdout.write('> ') 
 
         cmd = sys.stdin.readline().strip() 
-        if cmd in ['s', 'start']: 
+        if cmd in ['n', 'new']: 
             if game.started: 
                 print "Game is already started." 
                 continue
@@ -178,10 +176,10 @@ def main():
         elif cmd in ['p', 'print']: 
             print_status(game)
 
-        elif cmd in ['h', 'help']: 
+        elif cmd == 'help': 
             print_usage() 
 
-        elif cmd in ['c', 'hit']: 
+        elif cmd in ['h', 'hit']: 
             if not player.dealer and player.stood: 
                 print "You have already stood." 
                 continue 
@@ -198,10 +196,10 @@ def main():
                 game.stop() 
                 print_status(game) 
 
-        elif cmd in ['t', 'stand']: 
+        elif cmd in ['s', 'stand']: 
             stand(game) 
 
-        elif 'b' in cmd or 'bet' in cmd: 
+        elif 'b'in cmd or 'bet' in cmd: 
             if game.started: 
                 print "The game is already started"
                 continue 
@@ -212,7 +210,9 @@ def main():
 
             val = int(cmd.split()[1]) 
             
-            game.set_bet(val) 
+            game.set_bet(val)
+
+            print "Bet is set to %d" %game.get_bet()
 
         elif cmd in ['d', 'double']: 
             if not game.started: 

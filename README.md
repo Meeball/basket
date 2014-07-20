@@ -67,7 +67,5 @@ Click "Double" before any hittings if you want to double your bet and hit only o
 
 ## Contact Me  
 
-You can find me on GitHub as ['Meeball'](https://github.com/Meeball)
-
 You can send email to [cathybhn@gmail.com](mailto:cathybhn@gmail.com)
 
