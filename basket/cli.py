@@ -83,6 +83,14 @@ def draw(game):
     print '[Draw] You and dealer both got %d.' %(dealer_points) 
     game.stop() 
 
+def start_check(game): 
+    player = game.get_player()
+    if player.get_points() == 21: 
+        print 'blackjack!' 
+        stand(game) 
+
+    print_status(game) 
+
 def check(game, finished=False): 
     if not game.started: 
         return
@@ -184,7 +192,7 @@ def main():
                 continue 
 
             game.start() 
-            check(game) 
+            start_check(game) 
 
         elif cmd in ['p', 'print']: 
             print_status(game)
