@@ -22,7 +22,12 @@ def stand(game):
 
 def double(game): 
     player = game.get_player() 
-    game.set_bet(2 * game.get_bet()) 
+    nb = 2 * game.get_bet()
+    if nb > player.get_chips(): 
+        print "Insufficient Chips. Press 'q' to exit." 
+        return 
+
+    game.set_bet() 
     print "Bet is set to %d." %(game.get_bet()) 
     hit(game, player) 
     stand(game) 
@@ -67,7 +72,7 @@ def lose(game):
     player = game.get_player() 
     player.dec_chips(game.get_bet()) 
     if player.dec_chips <= 0: 
-        print 'Game Over'
+        print "Game Over. Press 'q' to exit."
 
     game.stop() 
 
@@ -163,6 +168,9 @@ def main():
             if game.started: 
                 print "Game is already started." 
                 continue
+            if game.get_bet() > player.get_chips(): 
+                print "Insufficient Chips. Press 'q' to exit." 
+                continue 
 
             game.start() 
             check(game) 
@@ -203,6 +211,7 @@ def main():
                 continue 
 
             val = int(cmd.split()[1]) 
+            
             game.set_bet(val) 
 
         elif cmd in ['d', 'double']: 
