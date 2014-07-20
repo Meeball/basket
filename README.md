@@ -9,6 +9,12 @@ A blackjack implementation in python.
 ```plain 
 $ python setup.py install 
 ``` 
+## If you prefer not install
+
+Go to the basket directory and 
+```
+$ bin/blackjack
+```
 
 ### Start a Game 
 
@@ -31,28 +37,37 @@ In summary, you can win over the dealer by any of the following situation:
 * Let the dealer draw additional cards until his or her hand exceeds 21.
 
 
-###Change Bet
+###New Game [n]
 
-You have 100 chips with you when entering the game, and the default bet is one chip. Click "Change Bet" and you can change your bet size at the input dialog at any end of your hand (minimum is 1 chip, maximum is your current chips).  
+Type [n] whenever you want to start a new hand or give up the current hand. When you give up the current hand, your bet won't come back.
+
+###Set Bet[b]
+
+You have 100 chips with you when entering the game, and the default bet is one chip. Type [b] and you can change your bet before any round begins (minimum is 1 chip, maximum is your current chips).  
  
 The game is over if all the chips are gambled. Your bet will win double, get back or lose your current bet if you accordingly win,tie or lose the hand.
 
-###Deal 
+###Hit [h]
 
-Click "Deal" whenever you want to start a new hand or giveup the current hand. When you give up the current hand, your bet won't come back.
+Type [h] to take another card each time. It would stop hitting if you went bust.
 
-###Hit
+###Stand [s]
 
-Click "Hit" to take another card each time. It would stop hitting if you go busted.
+Type [s] to end your round and go to dealer's turn. 
 
-###Stand
+###Double [d]
 
-Click "Stand" to end your round and go to dealer's turn. 
+When you got your initial cards, type [d] before any hitting if you want to double your bet and hit only once. After the double, it would go to dealer's turn automatically.
 
-###Double
+###Print [p]
 
-Click "Double" before any hittings if you want to double your bet and hit only once. After the double hitting, it would go to dealer's turn automatically.
+Print instant status including game ongoing status and current chips and bet.
 
+###Quit [q]
+
+Quit the game whenever you want.
+
+ 
 
 ## Features
 

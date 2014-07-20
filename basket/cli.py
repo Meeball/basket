@@ -49,19 +49,25 @@ def win(game):
     player_points = game.get_player().get_points()
     dealer_points = game.get_dealer().get_points()
 
-    print '[Win] You got %d while dealer got %d.' %(
+    if dealer_points > 21:
+        print '[Win] Dealer went bust'
+    else:
+        print '[Win] You got %d while dealer got %d.' %(
             player_points, dealer_points) 
     player = game.get_player() 
     player.inc_chips(game.get_bet()) 
 
-    game.stop() 
+    game.stop()
+    print 'New game?[n] or Quit[q]'
 
 def lose(game): 
     player_points = game.get_player().get_points()
     dealer_points = game.get_dealer().get_points()
-    
 
-    print '[Lose] You got %d while dealer got %d.' %(
+    if player_points > 21:
+        print '[Lose] You went bust'
+    else:
+        print '[Lose] You got %d while dealer got %d.' %(
             player_points, dealer_points) 
 
     player = game.get_player() 
@@ -69,7 +75,8 @@ def lose(game):
     if player.dec_chips <= 0: 
         print "Game Over. Press 'q' to exit."
 
-    game.stop() 
+    game.stop()
+    print 'New game?[n] or Quit[q]'
 
 def draw(game): 
     dealer_points = game.get_dealer().get_points()
@@ -102,8 +109,7 @@ def check(game, finished=False):
         elif player_points > dealer_points: 
             win(game) 
         else: 
-            draw(game) 
-
+            draw(game)
     
 
 def player_stats(player): 
@@ -118,7 +124,6 @@ def print_usage():
     print '    p --print    print the status of current game.' 
     print '    h --hit      fetch a card.' 
     print '    s --stand    stand.' 
-    print '    g --giveup   give up and finish the round.' 
     print '    b --bet      set bet value at the beginning.' 
     print '    d --double   double the bet.' 
     print '    q --quit     exit.' 
@@ -146,7 +151,7 @@ def print_status(game):
 
 def main(): 
     print 'Welcome to Blackjack!' 
-    print 'type help for instructions' 
+    print 'type [help] for instructions' 
 
     game = Game() 
     player = game.get_player() 
@@ -164,8 +169,16 @@ def main():
         cmd = sys.stdin.readline().strip() 
         if cmd in ['n', 'new']: 
             if game.started: 
-                print "Game is already started." 
+                sys.stdout.write('Comfirm to give up and start a new game. [Y/N] ') 
+                ans = sys.stdin.readline().strip() 
+                if ans in ['', 'y', 'Y']: 
+                    player.dec_chips(game.get_bet()) 
+                    player.clear_cards() 
+                    dealer.clear_cards() 
+                    game.stop() 
+                    print_status(game) 
                 continue
+            
             if game.get_bet() > player.get_chips(): 
                 print "Insufficient Chips. Press 'q' to exit." 
                 continue 
@@ -185,16 +198,6 @@ def main():
                 continue 
 
             hit(game, player) 
-        
-        elif cmd in ['g', 'giveup']: 
-            sys.stdout.write('Comfirm to give up and restart. [Y/n] ') 
-            ans = sys.stdin.readline().strip() 
-            if ans in ['', 'y', 'Y']: 
-                player.dec_chips(game.get_bet()) 
-                player.clear_cards() 
-                dealer.clear_cards() 
-                game.stop() 
-                print_status(game) 
 
         elif cmd in ['s', 'stand']: 
             stand(game) 
