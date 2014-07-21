@@ -9,18 +9,18 @@ A blackjack implementation in python.
 ```plain 
 $ python setup.py install 
 ``` 
-## If you prefer not install
-
-Go to the basket directory and 
-```
-$ bin/blackjack
-```
-
 ### Start a Game 
 
 ```plain 
 $ blackjack 
 ``` 
+
+### Or quick start from project
+
+Go to the project directory and 
+```
+$ bin/blackjack
+```
 
 ## Instructions
 
@@ -41,7 +41,7 @@ In summary, you can win over the dealer by any of the following situation:
 
 Type [n] whenever you want to start a new hand or give up the current hand. When you give up the current hand, your bet won't come back.
 
-###Set Bet[b]
+###Set Bet [b]
 
 You have 100 chips with you when entering the game, and the default bet is one chip. Type [b] and you can change your bet before any round begins (minimum is 1 chip, maximum is your current chips).  
  
@@ -82,5 +82,5 @@ Quit the game whenever you want.
 
 ## Contact Me  
 
-You can send email to [cathybhn@gmail.com](mailto:cathybhn@gmail.com)
+You can send email to Zhi Yang [cathybhn@gmail.com](mailto:cathybhn@gmail.com)
 

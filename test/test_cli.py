@@ -16,7 +16,6 @@ def game():
 @pytest.fixture() 
 def winning_game(): 
     g = Game() 
-    g.set_bet(4) 
     g.start() 
     player = g.get_player() 
     dealer = g.get_dealer() 
@@ -29,8 +28,7 @@ def winning_game():
 
 @pytest.fixture() 
 def losing_game(): 
-    g = Game() 
-    g.set_bet(4) 
+    g = Game()  
     g.start() 
     player = g.get_player() 
     dealer = g.get_dealer() 

@@ -58,7 +58,7 @@ def win(game):
     player.inc_chips(game.get_bet()) 
 
     game.stop()
-    print 'New game?[n] or Quit[q]'
+    print 'New game [n] or Quit [q] ?'
 
 def lose(game): 
     player_points = game.get_player().get_points()
@@ -76,43 +76,42 @@ def lose(game):
         print "Game Over. Press 'q' to exit."
 
     game.stop()
-    print 'New game?[n] or Quit[q]'
+    print 'New game [n] or Quit [q] ?'
 
 def draw(game): 
     dealer_points = game.get_dealer().get_points()
     print '[Draw] You and dealer both got %d.' %(dealer_points) 
-    game.stop() 
+    game.stop()
+    print "New game [n] or Quit [q] ?"
 
 def start_check(game): 
     player = game.get_player()
-    if player.get_points() == 21: 
-        print 'blackjack!' 
+    if player.get_points() == 21:
+        print_status(game)
+        print 'Blackjack!' 
         stand(game) 
 
-    print_status(game) 
-
-def check(game, finished=False): 
+ 
+def check(game, finished=False):
+    player = game.get_player()
+    
     if not game.started: 
         return
     
-    print_status(game) 
+    if not player.stood:
+        print_status(game) 
 
     player_points = game.get_player().get_points()
     dealer_points = game.get_dealer().get_points()
 
     if player_points > 21: 
         lose(game)
-    elif dealer_points > 21: 
-        win(game) 
-    elif player_points == 21 and dealer_points == 21: 
-        draw(game) 
-    elif player_points == 21: 
-        win(game) 
-    elif dealer_points == 21: 
-        lose(game) 
 
-    if finished: 
-        if player_points < dealer_points: 
+    if finished:
+        print_status(game)
+        if dealer_points > 21:
+            win(game)
+        elif player_points < dealer_points: 
             lose(game) 
         elif player_points > dealer_points: 
             win(game) 
@@ -141,15 +140,14 @@ def print_status(game):
     dealer = game.get_dealer() 
 
     if game.started:  
-        print "Your hand: %s total %d." %(
-                str(' '.join(map(str, player.cards))), 
-                player.get_points()) 
-
         if player.stood: 
             print "Dealer's hand: %s total %d." %(
                     str(' '.join(map(str, dealer.cards))), 
                     dealer.get_points())
-        else: 
+        else:
+            print "Your hand: %s total %d." %(
+                str(' '.join(map(str, player.cards))),
+                player.get_points())
             print "Dealer's revealed card is %s." %(
                     str(dealer.get_second_card()))
     else : 
@@ -192,7 +190,8 @@ def main():
                 continue 
 
             game.start() 
-            start_check(game) 
+            start_check(game)
+            check(game)
 
         elif cmd in ['p', 'print']: 
             print_status(game)
