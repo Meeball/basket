@@ -9,7 +9,7 @@ A blackjack implementation in python.
 ```plain 
 $ python setup.py install 
 ``` 
-### Start a Game 
+### Start Blackjack 
 
 ```plain 
 $ blackjack 
@@ -36,6 +36,9 @@ In summary, you can win over the dealer by any of the following situation:
 
 * Let the dealer draw additional cards until his or her hand exceeds 21.
 
+###Instructions [help]
+
+Type [help] to read instructions first after you entering *Blackjack*.
 
 ###New Game [n]
 
@@ -75,7 +78,9 @@ Quit the game whenever you want.
 
 * If the initial hand is *Blackjack*, the game will go to settlement automatically.
 
-* Count current hand total value for the player.
+* Display the total value of current hand for the player.
+
+* Add double hitting option to the game.
 
 * The player can change his bet before the next hand begins.
 
